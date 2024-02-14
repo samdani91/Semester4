@@ -1,0 +1,42 @@
+create table BRANCH(
+	BRANCH_NAME VARCHAR2(30) NOT NULL,
+	BRANCH_CITY VARCHAR2(30) NOT NULL,
+	ASSETS VARCHAR2(30) NOT NULL
+);
+
+insert into branch values('Sonali Bank,Jigatola','Dhaka','Gold 20kg');
+
+create table CUSTOMER(
+	ACCOUNT_NAME VARCHAR2(30) NOT NULL,
+	CUSTOMER_STREET VARCHAR2(30) NOT NULL,
+	CUSTOMER_CITY VARCHAR2(30) NOT NULL
+);
+
+insert into customer values
+('Samdani Mozumder','Monesshor Road,Jigatola','Dhaka'),
+('Gilane Mozumder','Parshuram Upzilla','Feni'),
+('Oni','Thakurpara','Cumilla');
+
+create table ACCOUNT(
+	ACCOUNT_NUMBER VARCHAR2(30) NOT NULL,
+	BRANCH_NAME VARCHAR2(30) NOT NULL,
+	BALANCE NUMBER
+);
+
+create table LOAN(
+	LOAN_NUMBER VARCHAR2(30) NOT NULL,
+	BRANCH_NAME VARCHAR2(30) NOT NULL,
+	AMOUNT NUMBER
+);
+
+create table DEPOSITOR(
+	CUSTOMER_NAME VARCHAR2(30) NOT NULL,
+	ACCOUNT_NUMBER VARCHAR2(30) NOT NULL
+);
+
+create table BORROWER(
+	CUSTOMER_NAME VARCHAR2(30) NOT NULL,
+	LOAN_NUMBER VARCHAR2(30) NOT NULL
+);
+
+drop table borrower; -> delete table
