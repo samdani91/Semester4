@@ -1,40 +1,46 @@
 #include<stdio.h>
-#include <stdlib.h>
+#include<stdlib.h>
 #include<unistd.h>
-#include<sys/wait.h>
+
+void evenSum(int n)
+{
+	int sum=0;
+	for(int i=1;i<=n;i++){
+		if(!(i%2)) sum+=i;
+	}
+	printf("Sum of even numbers in Child Process:%d\n",sum);
+}
+
+void oddSum(int n)
+{
+        int sum=0;
+        for(int i=1;i<=n;i++){
+                if(i&1) sum+=i;
+        }
+        printf("Sum of odd numbers in Parent Process:%d\n",sum);
+}
 
 int main()
 {
-    int n;
-    printf("Enter n:");
-    scanf("%d",&n);
+	int n;
+	printf("Enter n:");
+	scanf("%d",&n);
 
-    int even=0;
-    int odd=0;
-    int pid;
+	int pid;
 
-    switch(pid=fork()){
-        case 0:
-			for(int i=1;i<=n;i++){
-                if(i&1){
-                    odd+=i;
-                }
-            }
-            printf("Sum of Odd numbers(Child Process):%d\n",odd);
-			break;
+	switch(pid=fork()){
+		case 0:
+			oddSum(n);
+		        break;
 		default:
-			for(int i=1;i<=n;i++){
-                if(!(i%2)){
-                    even+=i;
-                }
-            }
-            printf("Sum of Even numbers(Parent Process):%d\n",even);
+			evenSum(n);
 			break;
 		case -1:
 			perror("fork");
 			exit(1);
-    }
-    
 
-    return 0;
+	}
+
+	return 0;
 }
+
