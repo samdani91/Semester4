@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int N=6;
+const int N=5;
 
 struct Process{
     string name;
@@ -42,13 +42,54 @@ bool sortReadyQ(Process one,Process two)
     return one.bt < two.bt;
 }
 
-bool createReadyQ(vector<Process>&ready,vector<Process>p,int currT)
+void createReadyQ(vector<Process>&ready,vector<Process>p,int currT)
 {
     ready.clear();
     for(auto process:p){
         if(process.at<=currT) ready.push_back(process);
     }
     sort(ready.begin(),ready.end(),sortReadyQ);
+}
+
+void ganttChart(vector<Res>results)
+{
+    printf("Gantt Chart\n\n|");
+
+    for(auto r:results) printf("   %s   |",r.name.c_str());
+
+    printf("\n");
+
+    printf("%-9d",0);
+
+    for(auto r:results) printf("%-9d",r.et);
+
+    printf("\n\n");
+}
+
+void turnAround(vector<Process>p)
+{
+    printf("Turn Around Time for each process:\n\n");
+    int sum=0;
+    for(auto process:p){
+        int tat=process.et-process.at;
+        sum+=tat;
+        printf("%s:%d\n", process.name.c_str(), tat);
+    }
+    printf("\n");
+    printf("Average Turn Around Time:%.2lf\n\n",sum/(double)N);
+}
+
+void waitingTime(vector<Process>p)
+{
+    printf("Waiting Time for each process:\n\n");
+    int sum=0;
+    for(auto process:p){
+        int wt=(process.et-process.at-process.bt);
+        sum+=wt;
+        printf("%s:%d\n", process.name.c_str(), wt);
+    }
+    printf("\n");
+    printf("Average Waiting Time:%.2lf\n\n",sum/(double)N);
 }
 
 int main()
@@ -108,6 +149,46 @@ int main()
                 }
             }
             createReadyQ(ready,temp,currT);
+            if(ready.empty()){
+                continue;
+            }
+            if(currP.bt<=ready[0].bt){
+                continue;
+            }
+            break;
+        }
+        Res res2;
+        res2.name=currP.name;
+        res2.st=currP.st;
+        res2.et=currT;
+
+        results.push_back(res2);
+
+        if(currP.bt==0){
+            currP.et=currT;
+            for(auto &process:p){
+                if(process.name==currP.name){
+                    process.et=currT;
+                    break;
+                }
+            }
+
+            auto it=temp.begin();
+            while(it!=temp.end()){
+                if((*it).name==currP.name){
+                    temp.erase(it);
+                    break;
+                }
+                it++;
+            }
         }
     }
+
+    ganttChart(results);
+
+    turnAround(p);
+
+    waitingTime(p);
+
+    return 0;
 }
