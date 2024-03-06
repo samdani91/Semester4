@@ -7,6 +7,7 @@ struct Process{
     string name;
     int bt,at;
     int st,et;
+    int priority;
 };
 
 struct Res{
@@ -19,7 +20,7 @@ void readInput(vector<Process>&p)
     Process process;
     for(int i=1;i<=N;i++){
         process.name = "P"+to_string(i);
-        cin>>process.bt>>process.at;
+        cin>>process.bt>>process.priority>>process.at;
         process.st=-1;
         process.et=-1;
         p.push_back(process);
@@ -28,7 +29,12 @@ void readInput(vector<Process>&p)
 
 bool cmpProcess(Process one,Process two)
 {
-    if(one.at==two.at) return one.bt < two.bt;
+    if(one.at==two.at){
+        if(one.priority==two.priority){
+            return one.bt < two.bt;
+        }
+        return one.priority > two.priority;
+    }
     return one.at < two.at;
 }
 
@@ -39,7 +45,7 @@ bool cmpRes(Res one,Res two)
 
 bool sortReadyQ(Process one,Process two)
 {
-    return one.bt < two.bt;
+    return one.priority > two.priority;
 }
 
 void createReadyQ(vector<Process>&ready,vector<Process>p,int currT)
@@ -71,7 +77,7 @@ void turnAround(vector<Process>p)
     printf("Turn Around Time for each process:\n\n");
     int sum=0;
     for(auto process:p){
-        int tat=process.et-process.at;
+        int tat=process.et-process.st;
         sum+=tat;
         printf("%s:%d\n", process.name.c_str(), tat);
     }
@@ -84,7 +90,7 @@ void waitingTime(vector<Process>p)
     printf("Waiting Time for each process:\n\n");
     int sum=0;
     for(auto process:p){
-        int wt=(process.et-process.at-process.bt);
+        int wt=(process.st-process.at)+(process.et-process.st-process.bt);
         sum+=wt;
         printf("%s:%d\n", process.name.c_str(), wt);
     }
@@ -94,8 +100,8 @@ void waitingTime(vector<Process>p)
 
 int main()
 {   
-    printf("\n\t\t-----------------SJF---------------\n\n");
-    freopen("input.txt","r",stdin);
+    printf("\n\t\t-----------------Priority Scheduling---------------\n\n");
+    freopen("input2.txt","r",stdin);
     vector<Process>p,temp,ready;
     vector<Res>results;
     readInput(p);
@@ -153,7 +159,10 @@ int main()
             if(ready.empty()){
                 continue;
             }
-            if(currP.bt<=ready[0].bt){
+            if(currP.priority>ready[0].priority){
+                continue;
+            }
+            if(currP.priority==ready[0].priority && currP.bt<=ready[0].bt){
                 continue;
             }
             break;
