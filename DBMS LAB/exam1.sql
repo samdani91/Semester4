@@ -67,3 +67,38 @@ select distinct color from SAILORS s,RESERVES r,BOATS b where s.SID=r.SID and r.
 select SNAME from SAILORS where sid in (select sid from RESERVES);
 
 --5th Q
+
+
+-- Find the names of sailors who have reserved a red boat, and list in the order of age
+select sname,age from SAILORS s,RESERVES r,BOATS b
+where
+s.sid=r.sid and r.bid=b.bid and b.color='red'
+order By 
+s.age;
+
+--. Find the ids and names of sailors who have reserved two different boats on the same day
+select distinct s.sid,sname from  SAILORS s,RESERVES r1,RESERVES r2 
+where s.sid=r1.sid and s.sid=r2.sid and r1.day=r2.day and r1.bid<>r2.bid;
+
+--Find the ids of sailors who have reserved a red boat or a green boat.
+select sid from RESERVES r,BOATS b
+where r.bid=b.bid and b.color='red'
+UNION ALL
+select sid from RESERVES r2,BOATS b2 
+where r2.bid=b2.bid and b2.color='green';
+
+--Find the name and the age of the youngest sailor
+select sname from SAILORS
+where age<=ALL(select age from SAILORS);
+
+--Find the names and ratings of sailor whose rating is better than some sailor called Horatio.
+select sname,rating from SAILORS
+where rating > ANY(select rating from SAILORS where sname='Horatio');
+
+--Find the names of sailors who have reserved all boats
+select s.sname from SAILORS s 
+where NOT EXISTS (
+    (select b.bid from BOATS b)
+    MINUS
+    (select r.bid from RESERVES r where r.sid=s.sid)
+);
