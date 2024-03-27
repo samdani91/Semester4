@@ -230,9 +230,6 @@ void expansionKey(unsigned char *originalKey)
         if ((idx % 16) == 0)
         {
             g_funct(prevWord, idx);
-            // rotationOfWord( prevWord ) ;
-            // substitutionWord( prevWord ) ;
-            // prevWord[0] ^= roundConstant[ (idx/16) - 1 ] ;
         }
 
         for (int k = 0; k < 4; k++)
