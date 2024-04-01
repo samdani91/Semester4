@@ -4,46 +4,69 @@
 
 int min=1e5;
 int max=0;
-int avg=0;
+double avg=0;
 
-void *runner1(void *param);
+int n;
+int *arr;
+
+void *calcAvg(void *param);
+void *calcMin(void *param);
+void *calcMax(void *param);
 
 int main(int argc,char *argv[])
 {
-    int n = argc - 1;
-    int arr[n + 1]; 
+    n = argc - 1;
+    arr = (int *)malloc(n * sizeof(int));
 
-    arr[0] = n;
-
-    for (int i = 1; i <= n; i++) {
-        arr[i] = atoi(argv[i]);
+    if (arr == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return 1;
     }
 
-    pthread_t tid;
+    for (int i = 0; i < n; i++) {
+        arr[i] = atoi(argv[i+1]);
+    }
+
+    pthread_t tid[3];
     pthread_attr_t attr;
 
     pthread_attr_init(&attr);
 
-    pthread_create(&tid, &attr, runner1, arr);
+    pthread_create(&tid[0], &attr, calcAvg, NULL);
+    pthread_create(&tid[1], &attr, calcMin, NULL);
+    pthread_create(&tid[2], &attr, calcMax, NULL);
 
-    int *ptr;
+    for(int i=0;i<3;i++){
+        pthread_join(tid[i],NULL);
+    }
 
-    pthread_join(tid, (void **)&ptr);
-
-    printf("Average:%i\n",*ptr);
+    printf("Average:%.2f\n",avg);
+    printf("Minimum:%d\n",min);
+    printf("Maximum:%d\n",max);
 
 }
 
-void *runner1(void *param)
+void *calcAvg(void *param)
 {
-    int *arr=(int *)param;
-    int n=arr[0];
-    for(int i=1;i<=n;i++){
-        //printf("%d ",arr[i]);
+    for(int i=0;i<n;i++){
         avg+=arr[i];
     }
     avg/=n;
+    pthread_exit(NULL);
+}
 
-    pthread_exit(&avg);
+void *calcMin(void *param)
+{
+    for(int i=0;i<n;i++){
+        if(arr[i]<min) min=arr[i];
+    }
+    pthread_exit(NULL);
+}
 
+void *calcMax(void *param)
+{
+    for(int i=0;i<n;i++){
+        if(arr[i]>max) max=arr[i];
+    }
+    pthread_exit(NULL);
 }
