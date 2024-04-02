@@ -17,7 +17,7 @@ int inCircle(float x,float y);
 
 int main(int argc,char *argv[])
 {
-    pthread_t tid[10];
+    pthread_t tid[5];
     pthread_attr_t attr;
 
     pthread_attr_init(&attr);
