@@ -7,6 +7,9 @@ using namespace std;
 unsigned char key[] = "abcdefghijklmnop";
 int extendedLen = 16;
 string Cipher_text;
+
+
+
 void substitutionWord(unsigned char *input);
 void rotationOfWord(unsigned char *input);
 void expansionKey(unsigned char *originalKey);
@@ -186,7 +189,7 @@ unsigned char TableFor14[256] =
         0x37, 0x39, 0x2b, 0x25, 0x0f, 0x01, 0x13, 0x1d, 0x47, 0x49, 0x5b, 0x55, 0x7f, 0x71, 0x63, 0x6d,
         0xd7, 0xd9, 0xcb, 0xc5, 0xef, 0xe1, 0xf3, 0xfd, 0xa7, 0xa9, 0xbb, 0xb5, 0x9f, 0x91, 0x83, 0x8d};
 
-unsigned char ExpandedKey[176]; // 44*4 = 176
+unsigned char ExpandedKey[176];
 int main()
 {
     string inpt, encr;
@@ -230,9 +233,6 @@ void expansionKey(unsigned char *originalKey)
         if ((idx % 16) == 0)
         {
             g_funct(prevWord, idx);
-            // rotationOfWord( prevWord ) ;
-            // substitutionWord( prevWord ) ;
-            // prevWord[0] ^= roundConstant[ (idx/16) - 1 ] ;
         }
 
         for (int k = 0; k < 4; k++)
@@ -294,10 +294,7 @@ void mixColumn(unsigned char *state)
         if (i % 4 == 3)
             temp[i] = TableFor2[state[i]] ^ TableFor3[state[i - 3]] ^ state[i - 1] ^ state[i - 2];
     }
-    // s0'= s0.T2 + s1.T3 + s2 + s3
-    // s1'= s0 + s1.T2 + s2.T3 + s3
-    // s2' = s0 + s1 + s2.T2 +s3.T3
-    // s3' = s0.T3 + s1 + s2 + s3.T2
+
     for (int i = 0; i < 16; i++)
         state[i] = temp[i];
 }
@@ -380,10 +377,7 @@ void inverseMixColumn(unsigned char *state)
         if (i % 4 == 3)
             temp[i] = TableFor14[state[i]] ^ TableFor11[state[i - 3]] ^ TableFor13[state[i - 2]] ^ TableFor9[state[i - 1]];
     }
-    // s0' = s0.T14 + s1.T11 + s2.T13 + s3.T9
-    // s1' = s1.T14 + s2.T11 + s3.T13 + s0.T9
-    // s2' = s2.T14 + s3.T11 + s0.T13 +s1.T9
-    // s3' = s3.T14 + s0.T11 + s1.T13 + s2.T9
+
     for (int i = 0; i < 16; i++)
         state[i] = temp[i];
 }
