@@ -425,8 +425,6 @@ void printEncrypt(unsigned char *text, int len)
 {
     for (int i = 0; i < len - 1; i++)
     {
-        // printf("%c", text[i] ) ;
-
         if (text[i + 1] == paddingCharacter && text[i + 2] == paddingCharacter)
         {
             text[i + 1] = '\0';
@@ -525,7 +523,6 @@ void write_file(string encrypted)
     for (int i = 0; i < extendedLen; i++)
     {
         fprintf(fp, "%02X", msg[i]);
-        // printf("%02X ",msg[i]);
     }
     cout << endl;
     fclose(fp);
