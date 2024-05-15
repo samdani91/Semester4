@@ -186,18 +186,18 @@ unsigned char TableFor14[256] =
         0xd7, 0xd9, 0xcb, 0xc5, 0xef, 0xe1, 0xf3, 0xfd, 0xa7, 0xa9, 0xbb, 0xb5, 0x9f, 0x91, 0x83, 0x8d};
 
 unsigned char ExpandedKey[176]; // 44*4 = 176
-int main()
-{
-    string inpt, encr;
-    cout << "Input : ";
-    getline(cin, inpt);
-    encr = cbc_encryption(inpt);
-    write_file(encr);
-    string decr;
-    decr = getDecryptedText(encr);
-    write_dec_file(decr, inpt.size());
-    // cout<<decr<<endl;
-}
+// int main()
+// {
+//     string inpt, encr;
+//     cout << "Input : ";
+//     getline(cin, inpt);
+//     encr = cbc_encryption(inpt);
+//     write_file(encr);
+//     string decr;
+//     decr = getDecryptedText(encr);
+//     write_dec_file(decr, inpt.size());
+//     // cout<<decr<<endl;
+// }
 
 void substitutionWord(unsigned char *input)
 {
