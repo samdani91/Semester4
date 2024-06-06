@@ -1,0 +1,9 @@
+ch 1,2 -> slide
+ch3 -> process related ja ase except laster kisu example ase windows linux dia ogula baad
+ch4 -> till 4.3
+ch5 -> multilevel feedback queue porjonto ar multicore system, pore example type ogula nai
+ch6 -> monitor ar 6.9 baade shob
+ch7 -> producer-consumer, reader-writer and dining philosopher
+ch8 -> full
+ch9 ->  9.3 porjonto afaik
+ch10 -> e khali page replacement algo gulai mone ase ar janina
